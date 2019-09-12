@@ -191,12 +191,6 @@ div.imageblock div.content { padding-left: 0; }
 span.image img { border-style: none; }
 a.image:visited { color: white; }
 
-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto 
-}
-
 dl {
   margin-top: 0.8em;
   margin-bottom: 0.8em;
@@ -554,7 +548,7 @@ usually connected via USB. Currently jMBus supports transceivers from
 Amber, IMST and Radiocrafts. The library was tested with the AMB8465-M
 and AMB8665-M from Amber, the IM871A-USB from IMST and the RC1180-MBUS
 rom Radiocrafts. The jMBus only supports passive listening for
-messages in modes S and T at the moment. Encryption modes 1 and 5 are supported.</p>
+messages in modes S, T and C2 at the moment. Encryption modes 1 and 5 are supported.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -592,9 +586,20 @@ response is returned by the read function.</p>
 <div class="listingblock">
 <div class="title">Read from Device.</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="type">int</span> primaryAddress = <span class="integer">1</span>;
-VariableDataStructure vds = mBusConnection.read(primaryAddress);
-<span class="comment">// do something with the vds</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">            <span class="type">int</span> primaryAddress = <span class="integer">1</span>;
+            mBusConnection.read(primaryAddress);
+        }
+    }
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> write() <span class="directive">throws</span> <span class="exception">IOException</span> {
+        MBusSerialBuilder builder = MBusConnection.newSerialBuilder(<span class="string"><span class="delimiter">&quot;</span><span class="content">/dev/ttyS0</span><span class="delimiter">&quot;</span></span>).setBaudrate(<span class="integer">2400</span>);
+        <span class="keyword">try</span> (MBusConnection mBusConnection = builder.build()) {
+            <span class="type">int</span> primaryAddress = <span class="integer">5</span>;
+            <span class="type">byte</span><span class="type">[]</span> data = { <span class="hex">0x01</span>, <span class="hex">0x7a</span>, <span class="hex">0x09</span> };
+            mBusConnection.write(primaryAddress, data);
+        }
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1046,7 +1051,7 @@ instructions on our FAQ site: <a href="https://www.openmuc.org/faq/" class="bare
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-27 14:15:08 CEST
+Last updated 2018-04-18 13:06:43 MESZ
 </div>
 </div>
 </body>
